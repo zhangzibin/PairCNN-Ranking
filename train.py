@@ -76,10 +76,10 @@ def build_input_data(data_left, data_right, label, vocab):
 def load_data(filepath, vocab_tuple=None):
     data = list(set(open(filepath).readlines()))
     data = [d.split(',') for d in data]
-    data = filter(lambda x: len(x)==4, data)
-    data_left = [x[1].strip().split(' ') for x in data]
-    data_right = [x[2].strip().split(' ') for x in data]
-    data_label = [int(x[3]) for x in data]
+    data = filter(lambda x: len(x)==3, data)
+    data_left = [x[0].strip().split(' ') for x in data]
+    data_right = [x[1].strip().split(' ') for x in data]
+    data_label = [int(x[2]) for x in data]
     num_pos = sum(data_label)
     data_left = pad_sentences(data_left, FLAGS.max_len_left)
     data_right = pad_sentences(data_right, FLAGS.max_len_right)
@@ -246,7 +246,7 @@ def main():
                     time_str = datetime.datetime.now().isoformat()
                     print("{}: dev-aver, loss {:g}, acc {:g}".format(time_str, loss, accuracy))
                     dev_loss.append(accuracy)
-                    print("\nRecently loss:")
+                    print("\nRecently accuracy:")
                     print dev_loss[-10:]
                     if overfit(dev_loss):
                         print 'Overfit!!'
